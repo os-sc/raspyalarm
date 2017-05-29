@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "name": "testconfig",
+      "eventgroups": [
+        {
+          "name": "testgroup1",
+          "events": [
+            {
+              "name": "testevent1",
+              "time": "0800"
+            },
+            {
+              "name": "testevent2",
+              "time": "0815"
+            }
+          ]
+        },
+        {
+          "name": "leetgroup",
+          "events": [
+            {
+              "name": "leet",
+              "time": "1337"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
