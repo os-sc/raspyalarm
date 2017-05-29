@@ -1,6 +1,7 @@
 import unittest
-
+from datetime import datetime
 from alarmconfig.data_types.time_string import TimeString
+
 
 class TimeStringTestsCase(unittest.TestCase):
     def SetUp(self):
@@ -150,3 +151,107 @@ class TimeStringTestsCase(unittest.TestCase):
 
     def test_int_7_is_not_valid_timestring(self):
         self.assertFalse(TimeString.is_valid_time_string(7))
+
+    ###########################
+    # TimeString compare_with #
+    ###########################
+
+    def test_comparing_time_string_with_same_datetime_returns_true(self):
+        dates = {
+            '0000': datetime(year=2000, month=1, day=1, hour=0, minute=0),
+            '0815': datetime(year=2000, month=1, day=1, hour=8, minute=15),
+            '2359': datetime(year=2000, month=1, day=1, hour=23, minute=59)
+        }
+        for s, dt in dates.items():
+            self.assertTrue(TimeString(s).compare_with_datetime(dt))
+
+    def test_comparing_time_string_with_past_datetime_returns_false(self):
+        dates = {
+            '0101': datetime(year=2000, month=1, day=1, hour=0, minute=0),
+            '0815': datetime(year=2000, month=1, day=1, hour=8, minute=14),
+            '2359': datetime(year=2000, month=1, day=1, hour=22, minute=59)
+        }
+        for s, dt in dates.items():
+            self.assertFalse(TimeString(s).compare_with_datetime(dt))
+
+    def test_comparing_time_string_with_future_datetime_returns_false(self):
+        dates = {
+            '0000': datetime(year=2000, month=1, day=1, hour=1, minute=1),
+            '0815': datetime(year=2000, month=1, day=1, hour=8, minute=16),
+            '2259': datetime(year=2000, month=1, day=1, hour=23, minute=59)
+        }
+        for s, dt in dates.items():
+            self.assertFalse(TimeString(s).compare_with_datetime(dt))
+
+    def test_comparing_time_string_with_same_time_string_returns_true(self):
+        dates = {
+            '0000': TimeString('0000'),
+            '0815': TimeString('0815'),
+            '2359': TimeString('2359')
+        }
+        for s, ds in dates.items():
+            self.assertTrue(TimeString(s).compare_with(ds))
+
+    def test_comparing_time_string_with_past_time_string_returns_false(self):
+        dates = {
+            '0101': TimeString('0000'),
+            '0815': TimeString('0814'),
+            '2359': TimeString('2259')
+        }
+        for s, ds in dates.items():
+            self.assertFalse(TimeString(s).compare_with(ds))
+
+    def test_comparing_time_string_with_future_time_string_returns_false(self):
+        dates = {
+            '0000': TimeString('0101'),
+            '0815': TimeString('0816'),
+            '2259': TimeString('2359')
+        }
+        for s, ds in dates.items():
+            self.assertFalse(TimeString(s).compare_with(ds))
+
+    def test_comparing_time_string_with_same_string_returns_true(self):
+        dates = {
+            '0000': '0000',
+            '0815': '0815',
+            '2359': '2359'
+        }
+        for s, string in dates.items():
+            self.assertTrue(TimeString(s).compare_with_string(string))
+
+    def test_comparing_time_string_with_past_string_returns_false(self):
+        dates = {
+            '0101': '0000',
+            '0815': '0814',
+            '2359': '2259'
+        }
+        for s, string in dates.items():
+            self.assertFalse(TimeString(s).compare_with_string(string))
+
+    def test_comparing_time_string_with_future_string_returns_false(self):
+        dates = {
+            '0000': '0101',
+            '0815': '0816',
+            '2259': '2359'
+        }
+        for s, string in dates.items():
+            self.assertFalse(TimeString(s).compare_with_string(string))
+
+    ####################################
+    # TimeString.convert_from_datetime #
+    ####################################
+
+    def test_0000_converts_correct(self):
+        expected = '0000'
+        actual = TimeString.convert_from_datetime(datetime(year=2000, month=1, day=1, hour=0, minute=0))
+        self.assertEqual(expected, str(actual))
+
+    def test_0815_converts_correct(self):
+        expected = '0815'
+        actual = TimeString.convert_from_datetime(datetime(year=2000, month=1, day=1, hour=8, minute=15))
+        self.assertEqual(expected, str(actual))
+
+    def test_0000_converts_correct(self):
+        expected = '2359'
+        actual = TimeString.convert_from_datetime(datetime(year=2000, month=1, day=1, hour=23, minute=59))
+        self.assertEqual(expected, str(actual))

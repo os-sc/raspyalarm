@@ -1,6 +1,7 @@
 import unittest
-import datetime
+from datetime import datetime
 from alarmconfig.data_types.date_string import DateString
+
 
 class DateStringTestsCase(unittest.TestCase):
     def SetUp(self):
@@ -204,18 +205,91 @@ class DateStringTestsCase(unittest.TestCase):
         self.assertFalse(DateString.is_valid_date_string('-1'))
 
     ###########################
-    # DateString.compare_with #
+    # DateString compare_with #
     ###########################
 
+    def test_comparing_date_string_with_same_datetime_returns_true(self):
+        dates = {
+            '31122999': datetime(year=2999, month=12, day=31),
+            '01011900': datetime(year=1900, month=1, day=1)
+        }
+        for s, dt in dates.items():
+            self.assertTrue(DateString(s).compare_with_datetime(dt))
 
+    def test_comparing_date_string_with_past_datetime_returns_false(self):
+        dates = {
+            '31122999': datetime(year=2999, month=12, day=30),
+            '01011900': datetime(year=1899, month=1, day=1)
+        }
+        for s, dt in dates.items():
+            self.assertFalse(DateString(s).compare_with_datetime(dt))
 
+    def test_comparing_date_string_with_future_datetime_returns_false(self):
+        dates = {
+            '30122999': datetime(year=2999, month=12, day=31),
+            '01011899': datetime(year=1900, month=1, day=1)
+        }
+        for s, dt in dates.items():
+            self.assertFalse(DateString(s).compare_with_datetime(dt))
 
+    def test_comparing_date_string_with_same_date_string_returns_true(self):
+        dates = {
+            '31122999': DateString('31122999'),
+            '01011900': DateString('01011900')
+        }
+        for s, ds in dates.items():
+            self.assertTrue(DateString(s).compare_with(ds))
+
+    def test_comparing_date_string_with_past_date_string_returns_false(self):
+        dates = {
+            '31122999': DateString('3012299'),
+            '01011900': DateString('01011899')
+        }
+        for s, ds in dates.items():
+            self.assertFalse(DateString(s).compare_with(ds))
+
+    def test_comparing_date_string_with_future_date_string_returns_false(self):
+        dates = {
+            '30122999': DateString('31122999'),
+            '01011899': DateString('01011900')
+        }
+        for s, ds in dates.items():
+            self.assertFalse(DateString(s).compare_with(ds))
+
+    def test_comparing_date_string_with_same_string_returns_true(self):
+        dates = {
+            '31122999': '31122999',
+            '01011900': '01011900'
+        }
+        for s, string in dates.items():
+            self.assertTrue(DateString(s).compare_with_string(string))
+
+    def test_comparing_date_string_with_past_string_returns_false(self):
+        dates = {
+            '31122999': '3012299',
+            '01011900': '01011899'
+        }
+        for s, string in dates.items():
+            self.assertFalse(DateString(s).compare_with_string(string))
+
+    def test_comparing_date_string_with_future_string_returns_false(self):
+        dates = {
+            '30122999': '31122999',
+            '01011899': '01011900'
+        }
+        for s, string in dates.items():
+            self.assertFalse(DateString(s).compare_with_string(string))
 
     ####################################
     # DateString.convert_from_datetime #
     ####################################
 
-    def test_01011970_return_correct(self):
-        expected = '01011970'
-        actual = DateString.convert_from_datetime()
+    def test_01011970_converts_correct(self):
+        expected = '01011900'
+        actual = DateString.convert_from_datetime(datetime(year=1900, month=1, day=1))
+        self.assertEqual(expected, str(actual))
 
+    def test_31122999_converts_correct(self):
+        expected = '31122999'
+        actual = DateString.convert_from_datetime(datetime(year=2999, month=12, day=31))
+        self.assertEqual(expected, str(actual))
