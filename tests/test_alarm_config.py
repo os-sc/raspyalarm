@@ -3,10 +3,8 @@ import unittest
 from alarmconfig.alarm_config import AlarmConfig
 from alarmconfig.events.event_group import EventGroup
 
-class AlarmConfigTestCase(unittest.TestCase):
-    def SetUp(self):
-        pass
 
+class AlarmConfigTestCase(unittest.TestCase):
     def test_initialize_config_name(self):
         expected = 'SuperCoolEventName'
         actual = AlarmConfig(expected).name

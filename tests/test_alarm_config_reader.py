@@ -6,9 +6,6 @@ from alarmconfig.errors.config_error import ConfigError
 
 
 class AlarmConfigReaderTestsCase(unittest.TestCase):
-    def SetUp(self):
-        pass
-
     #################
     # parse_configs #
     #################

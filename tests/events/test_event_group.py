@@ -7,9 +7,6 @@ from alarmconfig.repeaters.single_date_repeater import SingleDateRepeater
 
 
 class EventGroupTestCase(unittest.TestCase):
-    def SetUp(self):
-        pass
-
     ##########################
     # EventGroup Constructor #
     ##########################

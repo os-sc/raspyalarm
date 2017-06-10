@@ -4,9 +4,6 @@ from alarmconfig.data_types.date_string import DateString
 
 
 class DateStringTestsCase(unittest.TestCase):
-    def SetUp(self):
-        pass
-
         ##########################
         # TestString Constructor #
         ##########################

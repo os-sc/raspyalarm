@@ -3,9 +3,6 @@ import unittest
 from alarmconfig.events.event import Event
 
 class EventTestCase(unittest.TestCase):
-    def SetUp(self):
-        pass
-
     def test_initialize_event_name(self):
         expected = 'SuperCoolEventName'
         actual = Event(expected).name

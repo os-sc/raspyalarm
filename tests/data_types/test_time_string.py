@@ -4,9 +4,6 @@ from alarmconfig.data_types.time_string import TimeString
 
 
 class TimeStringTestsCase(unittest.TestCase):
-    def SetUp(self):
-        pass
-
     ##########################
     # TestString Constructor #
     ##########################
